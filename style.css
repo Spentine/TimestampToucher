@@ -4,20 +4,35 @@ body {
   background-color: #202020;
   overflow: hidden;
   font-family: 'Reddit Mono', monospace;
+  margin: 0;
+  padding: 0;
 }
 
 p {
   color: #ffffff;
   font-family: inherit;
+  margin: 0;
 }
 
 #center {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100dvh;
 }
 
 #mainButton {
+  width: 100dvw;
+  height: 100dvw;
   
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  background-color: #303030;
+  border-radius: 50dvw;
+}
+
+#mainText {
+  font-size: 16%;
 }
