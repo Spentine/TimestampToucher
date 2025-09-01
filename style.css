@@ -52,12 +52,14 @@ p {
 .number {
   display: inline-block;
   color: #ffffff;
+  transition: 0.2s;
 }
 
 .colon {
   display: inline-block;
   transform: translateY(-6%);
   color: #888888;
+  transition: 0.2s;
 }
 
 #clickEffectContainer {
@@ -68,4 +70,12 @@ p {
 .clickEffect {
   position: absolute;
   background-color: #ffffff;
+}
+
+.number.stopped {
+  color: #aaffaa;
+}
+
+.colon.stopped {
+  color: #558855;
 }

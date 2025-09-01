@@ -29,10 +29,10 @@ function main() {
     mainContent.appendChild(colon2);
     mainContent.appendChild(secondElement);
     
-    return [hourElement, minuteElement, secondElement];
+    return [hourElement, minuteElement, secondElement, colon1, colon2];
   }
   
-  const [hour, minute, second] = addMainContent();
+  const [hourElement, minuteElement, secondElement, colon1, colon2] = addMainContent();
   
   const clickEffects = [];
   const disappearTime = 500;
@@ -73,14 +73,43 @@ function main() {
     });
   }
   
-  function updateMainContent() {
+  let stopped = false;
+  
+  function getTime() {
     const currentHour = new Date().getHours();
     const currentMinute = new Date().getMinutes();
     const currentSecond = new Date().getSeconds();
     
-    hour.textContent = String(currentHour).padStart(2, "0");
-    minute.textContent = String(currentMinute).padStart(2, "0");
-    second.textContent = String(currentSecond).padStart(2, "0");
+    return [
+      String(currentHour).padStart(2, "0"),
+      String(currentMinute).padStart(2, "0"),
+      String(currentSecond).padStart(2, "0")
+    ];
+  }
+  
+  function updateMainContent() {
+    if (stopped) {
+      // add .stopped class
+      hourElement.classList.add("stopped");
+      minuteElement.classList.add("stopped");
+      secondElement.classList.add("stopped");
+      colon1.classList.add("stopped");
+      colon2.classList.add("stopped");
+      return;
+    }
+    
+    // remove .stopped class
+    hourElement.classList.remove("stopped");
+    minuteElement.classList.remove("stopped");
+    secondElement.classList.remove("stopped");
+    colon1.classList.remove("stopped");
+    colon2.classList.remove("stopped");
+    
+    const [hour, minute, second] = getTime();
+    
+    hourElement.textContent = hour;
+    minuteElement.textContent = minute;
+    secondElement.textContent = second;
   }
   
   updateMainContent();
@@ -119,6 +148,21 @@ function main() {
   function clicked(clickX, clickY) {
     console.log("click position", clickX, clickY);
     createClickEffect({ x: clickX, y: clickY });
+    
+    if (!stopped) {
+      stopped = true;
+      
+      const [hour, minute, second] = getTime();
+      const timeString = `${hour}:${minute}:${second}`;
+      
+      // copy current time to clipboard
+      navigator.clipboard.writeText(timeString);
+      
+      // show confirmation
+      alert(timeString);
+    } else {
+      stopped = false;
+    }
   }
   
   mainButton.addEventListener("mousedown", (event) => {
