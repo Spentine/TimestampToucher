@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Reddit+Mono:wght@200..900&display=swap');
+
+body {
+  background-color: #202020;
+  overflow: hidden;
+  font-family: 'Reddit Mono', monospace;
+}
+
+p {
+  color: #ffffff;
+  font-family: inherit;
+}
+
+#center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+#mainButton {
+  
+}
