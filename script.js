@@ -34,6 +34,45 @@ function main() {
   
   const [hour, minute, second] = addMainContent();
   
+  const clickEffects = [];
+  const disappearTime = 500;
+  function updateClickEffects() {
+    const bounds = clickEffectContainer.getBoundingClientRect();
+    for (let i = 0; i < clickEffects.length; i++) {
+      const effect = clickEffects[i];
+      const elapsed = (Date.now() - effect.time) / disappearTime;
+      
+      // remove if expired
+      if (elapsed > 1) {
+        effect.element.remove();
+        clickEffects.splice(i, 1);
+        i--;
+      }
+      
+      effect.element.style.opacity = (1 - elapsed) / 10;
+      const width = bounds.width * elapsed;
+      effect.element.style.width = `${width}px`;
+      effect.element.style.height = `${width}px`;
+      effect.element.style.left = `${(effect.x * bounds.width) - (width / 2)}px`;
+      effect.element.style.top = `${(effect.y * bounds.height) - (width / 2)}px`;
+      effect.element.style.borderRadius = `${width / 2}px`;
+    }
+  }
+  
+  function createClickEffect(position) {
+    const effect = document.createElement("div");
+    effect.classList.add("clickEffect");
+    clickEffectContainer.appendChild(effect);
+    
+    const bounds = clickEffectContainer.getBoundingClientRect();
+    clickEffects.push({
+      x: ((position.x - bounds.left) / bounds.width),
+      y: ((position.y - bounds.top) / bounds.height),
+      time: Date.now(),
+      element: effect
+    });
+  }
+  
   function updateMainContent() {
     const currentHour = new Date().getHours();
     const currentMinute = new Date().getMinutes();
@@ -62,21 +101,38 @@ function main() {
     mainButton.style.width = `80${unit}`;
     mainButton.style.height = `80${unit}`;
     mainButton.style.borderRadius = `40${unit}`;
+    clickEffectContainer.style.width = `80${unit}`;
+    clickEffectContainer.style.height = `80${unit}`;
+    clickEffectContainer.style.borderRadius = `40${unit}`;
     mainContent.style.fontSize = `16${unit}`;
     
+    // update time
     updateMainContent();
-
+    
+    // update click effects
+    updateClickEffects();
+    
     window.requestAnimationFrame(render);
   }
   render();
   
-  function clicked(event) {
-    event.preventDefault();
-    console.log("clicked", event);
+  function clicked(clickX, clickY) {
+    console.log("click position", clickX, clickY);
+    createClickEffect({ x: clickX, y: clickY });
   }
   
-  mainButton.addEventListener("mousedown", clicked);
-  mainButton.addEventListener("touchstart", clicked);
+  mainButton.addEventListener("mousedown", (event) => {
+    const clickX = event.clientX;
+    const clickY = event.clientY;
+    event.preventDefault();
+    clicked(clickX, clickY);
+  });
+  mainButton.addEventListener("touchstart", (event) => {
+    const touchX = event.touches[0].clientX;
+    const touchY = event.touches[0].clientY;
+    event.preventDefault();
+    clicked(touchX, touchY);
+  });
 }
 
 if (document.readyState === "loading") {

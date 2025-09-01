@@ -41,6 +41,8 @@ p {
   background-color: #303030;
   border-radius: 50dvw;
   border: 1px solid #505050;
+  
+  overflow: hidden;
 }
 
 #mainContent {
@@ -56,4 +58,14 @@ p {
   display: inline-block;
   transform: translateY(-6%);
   color: #888888;
+}
+
+#clickEffectContainer {
+  position: absolute;
+  overflow: hidden;
+}
+
+.clickEffect {
+  position: absolute;
+  background-color: #ffffff;
 }
